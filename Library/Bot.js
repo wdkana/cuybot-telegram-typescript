@@ -26,7 +26,6 @@ class Bot extends TelegramBot {
     }
     get_profile() {
         this.onText(/!myprofile/, (data, after) => {
-            console.log(after)
             const { id, first_name, last_name, username } = data.from;
             const response = `username ${username}, nama lengkap ${first_name} ${last_name}`;
             this.sendMessage(id, response);
@@ -51,6 +50,36 @@ class Bot extends TelegramBot {
             const api = await fetch(url)
             const response = await api.json() 
             this.sendMessage(id, response.quote)
+        })
+    }
+    news() {
+        this.onText(/!berita/, async (data) => {
+            const id = data.from.id
+            const url = "https://jakpost.vercel.app/api/category/indonesia"
+            const api = await fetch(url)
+            const response = await api.json()
+            //single
+            const { title, image, headline } = response.posts[0]
+            this.sendPhoto(id, image, {caption: `${title}\n${headline}`})
+            //Multiple
+            // for(var i=0; i < 3; i++){
+            //     const { title, image, headline } = response.posts[i]
+            //     this.sendPhoto(id, image, {caption: `${title}\n${headline}`})
+            // }
+        })
+    }
+    podcast() {
+        this.onText(/!podcast/, async (data) => {
+            const id = data.from.id
+            const url = "https://jakpost.vercel.app/api/podcast"
+            const api = await fetch(url)
+            const response = await api.json() 
+            const { link } = response.podcast[0]
+            const api_podcast = await fetch(link)
+            const response_podcast = await api_podcast.json() 
+            const { title, image, audio } = response_podcast.detail_podcast
+            console.log(audio)
+            this.sendAudio(id, audio, {caption: title, thumbnail: image})
         })
     }
 }
