@@ -38,6 +38,21 @@ class Bot extends TelegramBot {
             this.sendMessage(chatId, after[1]);
         });
     }
+    generate_avatar() {
+        this.onText(/!avatar(.+)/, async (data, after) => {
+            const id = data.from.id
+            this.sendPhoto(id, `https://robohash.org/${after[1]}`)
+        })
+    }
+    quote() {
+        this.onText(/!quote/, async (data) => {
+            const id = data.from.id
+            const url = "https://api.kanye.rest/"
+            const api = await fetch(url)
+            const response = await api.json() 
+            this.sendMessage(id, response.quote)
+        })
+    }
 }
 
 module.exports = Bot

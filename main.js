@@ -13,6 +13,8 @@ bot.receive_sticker()
 bot.get_profile()
 bot.follow_me()
 bot.earth_quake()
+bot.generate_avatar()
+bot.quote()
 
 
 
