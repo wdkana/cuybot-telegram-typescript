@@ -58,10 +58,10 @@ class Bot extends TelegramBot {
             const url = "https://jakpost.vercel.app/api/category/indonesia"
             const api = await fetch(url)
             const response = await api.json()
-            //single
+            //single news
             const { title, image, headline } = response.posts[0]
             this.sendPhoto(id, image, {caption: `${title}\n${headline}`})
-            //Multiple
+            //Multiple news
             // for(var i=0; i < 3; i++){
             //     const { title, image, headline } = response.posts[i]
             //     this.sendPhoto(id, image, {caption: `${title}\n${headline}`})
