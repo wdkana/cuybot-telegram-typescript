@@ -20,7 +20,6 @@ function checkCommands(bot) {
 
 function checkCallback(bot) {
     bot.on('callback_query', (data) => {
-        console.log("from callback query!", checkUser(data))
         const callbackData = data.data
         const chatId = data.from.id
         if (callbackData == "go_to_help") {
