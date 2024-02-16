@@ -3,7 +3,6 @@ const commands = require("./commands");
 const { checkTime, checkUser, helperGuide } = require("./utils")
 class Bot extends TelegramBot {
     constructor(token) {
-        console.log("extending telegram bot...");
         super(token, { polling: true })
         this.on("message", (data) => {
             const id = data.from.id
