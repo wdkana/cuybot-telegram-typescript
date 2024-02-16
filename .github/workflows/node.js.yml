@@ -17,9 +17,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
       - run: npm install
+      - run: yarn install
+      - run: pnpm install
+      - run: bun install
       - run: npm run build --if-present
+
+      - name: Telegram notification
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            Build status: ${{ job.status }}
+            Repository: ${{ github.repository }}
+            Commit message: ${{ github.event.commits[0].message }}
+            Commit: ${{ github.sha }}
+            Source: https://github.com/${{ github.repository }}/commit/${{github.sha}}
