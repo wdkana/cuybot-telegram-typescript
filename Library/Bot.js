@@ -1,6 +1,6 @@
 let TelegramBot = require("node-telegram-bot-api");
 const commands = require("./commands");
-const { checkTime, checkUser } = require("./utils")
+const { checkTime, checkUser, helperGuide } = require("./utils")
 class Bot extends TelegramBot {
     constructor(token) {
         console.log("extending telegram bot...");
@@ -11,7 +11,22 @@ class Bot extends TelegramBot {
             const isInCommand = Object.values(commands).some((keyword) => keyword.test(text))
             if (!isInCommand) {
                 console.log("user typing outside commands...", checkUser(data.from), checkTime());
-                this.sendMessage(id, "Saya tidak mengerti 🙏\nketik !help untuk memunculkan panduan")
+                this.sendMessage(id, "Saya tidak mengerti 🙏\nketik !help atau klik tombol dibawah ini untuk memunculkan panduan ", {
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                { text: "Panduan Penggunaan", callback_data: "go_to_help" }
+                            ]
+                        ]
+                    }
+                })
+            }
+        })
+        this.on('callback_query', (query) => {
+            const callbackData = query.data
+            const chatId = query.from.id
+            if (callbackData == "go_to_help") {
+                this.sendMessage(chatId, helperGuide())
             }
         })
         console.log("telegram bot ready!");
@@ -91,24 +106,8 @@ class Bot extends TelegramBot {
         this.onText(commands.help, async (data) => {
             console.log("feature: get_help executed!", checkUser(data.from), checkTime());
             const id = data.from.id
-            const result = ` 🍻 Panduan Penggunaan 🍻
 
-👇 Basic Command 👇
----
-    !help memunculkan bantuan
-    !quote memunculkan quotes secara acak
-    !quake info gempa terbaru dari BMKG
-    !profile cek profile kamu
-    !news menampilkan berita terbaru
----
-
-👇 Command with parameter 👇
----
-    !avatar [nama] generate gambar avatar buatmu
-    !followme [ucapan] mengikuti apa ucapanmu 
----
-`
-            this.sendMessage(id, result)
+            this.sendMessage(id, helperGuide())
         })
     }
 

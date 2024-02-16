@@ -17,4 +17,25 @@ function checkTime() {
     return date + "-" + month + "-" + year + " " + hours + ":" + minutes + ":" + seconds
 }
 
-module.exports = { checkUser, checkTime }
+function helperGuide() {
+    const result = ` 🍻 Panduan Penggunaan 🍻
+
+👇 Basic Command 👇
+---
+    !help memunculkan bantuan
+    !quote memunculkan quotes secara acak
+    !quake info gempa terbaru dari BMKG
+    !profile cek profile kamu
+    !news menampilkan berita terbaru
+---
+
+👇 Command with parameter 👇
+---
+    !avatar [nama] generate gambar avatar buatmu
+    !followme [ucapan] mengikuti apa ucapanmu 
+---
+`
+    return result
+}
+
+module.exports = { checkUser, checkTime, helperGuide }
