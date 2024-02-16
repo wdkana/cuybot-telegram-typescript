@@ -20,7 +20,7 @@ function checkCommands(bot) {
 
 function checkCallback(bot) {
     bot.on('callback_query', (data) => {
-        console.log("🚀 ~ helperCallback ~ data:", data)
+        console.log("from callback query!", checkUser(data))
         const callbackData = data.data
         const chatId = data.from.id
         if (callbackData == "go_to_help") {
@@ -30,8 +30,8 @@ function checkCallback(bot) {
 }
 
 function checkUser(data) {
-    if (!data.username || !data.first_name) return "juragan"
-    return data.username
+    if (!data.from.username || !data.from.first_name) return "juragan"
+    return data.from.username
 }
 
 function checkTime() {

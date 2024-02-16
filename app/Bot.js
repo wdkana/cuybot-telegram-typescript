@@ -11,7 +11,7 @@ class Bot extends TelegramBot {
     }
     get_sticker() {
         this.on("sticker", (data) => {
-            console.log("feature: get_sticker executed!", checkUser(data.from), checkTime());
+            console.log("feature: get_sticker executed!", checkUser(data), checkTime());
             const id = data.from.id
             const sticker = data.sticker.emoji
             this.sendMessage(id, sticker)
@@ -19,7 +19,7 @@ class Bot extends TelegramBot {
     }
     get_earth_quake() {
         this.onText(commands.quake, async (data) => {
-            console.log("feature: get_earth_quake executed!", checkUser(data.from), checkTime());
+            console.log("feature: get_earth_quake executed!", checkUser(data), checkTime());
             const id = data.from.id
             const url = "https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json"
             try {
@@ -35,9 +35,9 @@ class Bot extends TelegramBot {
     }
     get_profile() {
         this.onText(commands.profile, (data) => {
-            console.log("feature: get_profile executed!", checkUser(data.from), checkTime());
+            console.log("feature: get_profile executed!", checkUser(data), checkTime());
             const id = data.from.id;
-            const response = `Halo saya tau kamu ${checkUser(data.from)}! 🙊`;
+            const response = `Halo saya tau kamu ${checkUser(data)}! 🙊`;
             this.sendMessage(id, response);
         });
     }
@@ -57,7 +57,7 @@ class Bot extends TelegramBot {
     }
     get_news() {
         this.onText(commands.news, async (data) => {
-            console.log("feature: get_news executed!", checkUser(data.from), checkTime());
+            console.log("feature: get_news executed!", checkUser(data), checkTime());
             const id = data.from.id
             this.sendMessage(id, "mohon tunggu...")
             try {
@@ -75,7 +75,7 @@ class Bot extends TelegramBot {
     }
     get_help() {
         this.onText(commands.help, async (data) => {
-            console.log("feature: get_help executed!", checkUser(data.from), checkTime());
+            console.log("feature: get_help executed!", checkUser(data), checkTime());
             const id = data.from.id
             this.sendMessage(id, showHelp())
         })
@@ -84,7 +84,7 @@ class Bot extends TelegramBot {
     // WITH PARAMETER //
     get_text_by_input() {
         this.onText(commands.followme, (data, after) => {
-            console.log("feature: get_text_by_input executed!", checkUser(data.from), checkTime());
+            console.log("feature: get_text_by_input executed!", checkUser(data), checkTime());
             let chatId = data.from.id;
             this.sendMessage(chatId, after[1]);
         });
@@ -92,7 +92,7 @@ class Bot extends TelegramBot {
     // WITH PARAMETER //
     get_avatar_by_name() {
         this.onText(commands.avatar, async (data, after) => {
-            console.log("feature: get_avatar_by_name executed!", checkUser(data.from), checkTime());
+            console.log("feature: get_avatar_by_name executed!", checkUser(data), checkTime());
             const id = data.from.id
             this.sendMessage(id, "mohon tunggu...")
             this.sendPhoto(id, `https://robohash.org/${after[1]}`)
