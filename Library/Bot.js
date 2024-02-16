@@ -1,11 +1,12 @@
 let TelegramBot = require("node-telegram-bot-api");
 const commands = require("./commands");
+const { checkTime, checkUser } = require("./utils")
 class Bot extends TelegramBot {
     constructor(token) {
         console.log("extending telegram bot...");
         super(token, { polling: true })
         this.on("message", (data) => {
-            console.log("user typing outside commands...");
+            console.log("user typing outside commands...", checkUser(data.from), checkTime());
             const id = data.from.id
             const text = data.text
             const isInCommand = Object.values(commands).some((keyword) => keyword.test(text))
@@ -17,10 +18,10 @@ class Bot extends TelegramBot {
     }
     get_sticker() {
         console.log("get_sticker ready!");
-        this.on("sticker", (callback) => {
-            console.log("feature: get_sticker executed!");
-            const id = callback.from.id
-            const sticker = callback.sticker.emoji
+        this.on("sticker", (data) => {
+            console.log("feature: get_sticker executed!", checkUser(data.from), checkTime());
+            const id = data.from.id
+            const sticker = data.sticker.emoji
             this.sendMessage(id, sticker)
 
         })
@@ -28,7 +29,7 @@ class Bot extends TelegramBot {
     get_earth_quake() {
         console.log("get_earth_quake ready!");
         this.onText(commands.quake, async (data) => {
-            console.log("feature: get_earth_quake executed!");
+            console.log("feature: get_earth_quake executed!", checkUser(data.from), checkTime());
             const id = data.from.id
             const url = "https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json"
             try {
@@ -45,7 +46,7 @@ class Bot extends TelegramBot {
     get_profile() {
         console.log("get_profile ready!");
         this.onText(commands.profile, (data) => {
-            console.log("feature: get_profile executed!");
+            console.log("feature: get_profile executed!", checkUser(data.from), checkTime());
             const { id, first_name, last_name, username } = data.from;
             const response = `username ${username}, nama lengkap ${first_name} ${last_name}`;
             this.sendMessage(id, response);
@@ -54,7 +55,7 @@ class Bot extends TelegramBot {
     get_quote() {
         console.log("get_quote ready!");
         this.onText(commands.quote, async (data) => {
-            console.log("feature: get_quote executed!");
+            console.log("feature: get_quote executed!", checkUser(data.from), checkTime());
             const id = data.from.id
             const url = "https://api.kanye.rest/"
             try {
@@ -69,7 +70,7 @@ class Bot extends TelegramBot {
     get_news() {
         console.log("get_news ready!");
         this.onText(commands.news, async (data) => {
-            console.log("feature: get_news executed!");
+            console.log("feature: get_news executed!", checkUser(data.from), checkTime());
             const id = data.from.id
             this.sendMessage(id, "mohon tunggu...")
             try {
@@ -88,7 +89,7 @@ class Bot extends TelegramBot {
     get_help() {
         console.log("get_help ready!");
         this.onText(commands.help, async (data) => {
-            console.log("feature: get_help executed!");
+            console.log("feature: get_help executed!", checkUser(data.from), checkTime());
             const id = data.from.id
             const result = ` 🍻 Panduan Penggunaan 🍻
 
@@ -115,7 +116,7 @@ class Bot extends TelegramBot {
     get_text_by_input() {
         console.log("get_text_by_input ready!");
         this.onText(commands.followme, (data, after) => {
-            console.log("feature: get_text_by_input executed!");
+            console.log("feature: get_text_by_input executed!", checkUser(data.from), checkTime());
             let chatId = data.from.id;
             this.sendMessage(chatId, after[1]);
         });
@@ -124,7 +125,7 @@ class Bot extends TelegramBot {
     get_avatar_by_name() {
         console.log("get_avatar_by_name ready!");
         this.onText(commands.avatar, async (data, after) => {
-            console.log("feature: get_avatar_by_name executed!");
+            console.log("feature: get_avatar_by_name executed!", checkUser(data.from), checkTime());
             const id = data.from.id
             this.sendMessage(id, "mohon tunggu...")
             this.sendPhoto(id, `https://robohash.org/${after[1]}`)
