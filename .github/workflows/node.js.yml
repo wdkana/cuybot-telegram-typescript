@@ -1,0 +1,40 @@
+name: Node.js Version Checking
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: ["18.19.0", "21.6.2"]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - run: npm install
+      - run: yarn install
+      - run: npm run build --if-present
+
+      - name: Telegram notification
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            Repository ada perubahan nih!
+            -----
+            Cuybot update status: ${{ job.status }}
+            Commit: 
+            ${{ github.event.commits[0].message }} | ${{ github.sha }}
+            -----
+            Source: https://github.com/${{ github.repository }}/commit/${{github.sha}}
