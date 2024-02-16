@@ -1,6 +1,7 @@
 const env = require("dotenv")
 const Bot = require("./Library/Bot")
 env.config()
+process.env.TZ = 'Indonesia/Jakarta';
 
 // BOT CONFIG
 console.log("🎇 starting cuybot...");
