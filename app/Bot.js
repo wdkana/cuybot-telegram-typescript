@@ -43,7 +43,7 @@ class Bot extends TelegramBot {
     }
     get_quote() {
         this.onText(commands.quote, async (data) => {
-            console.log("feature: get_quote executed!", checkUser(data.from), checkTime());
+            console.log("feature: get_quote executed!", checkUser(data), checkTime());
             const id = data.from.id
             const url = "https://api.kanye.rest/"
             try {
