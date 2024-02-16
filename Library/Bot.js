@@ -6,11 +6,11 @@ class Bot extends TelegramBot {
         console.log("extending telegram bot...");
         super(token, { polling: true })
         this.on("message", (data) => {
-            console.log("user typing outside commands...", checkUser(data.from), checkTime());
             const id = data.from.id
             const text = data.text
             const isInCommand = Object.values(commands).some((keyword) => keyword.test(text))
             if (!isInCommand) {
+                console.log("user typing outside commands...", checkUser(data.from), checkTime());
                 this.sendMessage(id, "Saya tidak mengerti 🙏\nketik !help untuk memunculkan panduan")
             }
         })
