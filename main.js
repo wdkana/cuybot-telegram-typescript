@@ -1,5 +1,5 @@
 const env = require("dotenv")
-const Bot = require("./Library/Bot")
+const Bot = require("./app/Bot")
 env.config()
 process.env.TZ = 'Indonesia/Jakarta';
 
