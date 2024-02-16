@@ -31,8 +31,10 @@ jobs:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
-            Build status: ${{ job.status }}
-            Repository: ${{ github.repository }}
-            Commit message: ${{ github.event.commits[0].message }}
-            Commit: ${{ github.sha }}
+            Repository ada perubahan nih!
+            -----
+            Cuybot update status: ${{ job.status }}
+            Commit: 
+            ${{ github.event.commits[0].message }} | ${{ github.sha }}
+            -----
             Source: https://github.com/${{ github.repository }}/commit/${{github.sha}}
