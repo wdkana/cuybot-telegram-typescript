@@ -62,8 +62,8 @@ class Bot extends TelegramBot {
         console.log("get_profile ready!");
         this.onText(commands.profile, (data) => {
             console.log("feature: get_profile executed!", checkUser(data.from), checkTime());
-            const { id, first_name, last_name, username } = data.from;
-            const response = `username ${username}, nama lengkap ${first_name} ${last_name}`;
+            const id = data.from.id;
+            const response = `Halo saya tau kamu ${checkUser(data.from)}! 🙊`;
             this.sendMessage(id, response);
         });
     }
