@@ -9,6 +9,8 @@ const bot_token = process.env.token
 const bot = new Bot(bot_token)
 
 // ACTIVATE BOT FEATURE
+bot.init()
+bot.help()
 bot.receive_sticker()
 bot.get_profile()
 bot.follow_me()
