@@ -5,7 +5,7 @@ const { checkTime, checkUser, checkCommands, checkCallback } = require("../libs/
 
 class Bot extends TelegramBot {
     constructor(token) {
-        super(token, { polling: true })
+        super(token, { polling: true, filepath: false })
         checkCommands(this)
         checkCallback(this)
     }
