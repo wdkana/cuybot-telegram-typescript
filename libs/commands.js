@@ -1,12 +1,20 @@
+const command_sign = "!"
+
+function filtered(word, type) {
+    if (type == "after") {
+        return new RegExp(`^${command_sign}${word}(.+)`)
+    }
+    return new RegExp(`^${command_sign}${word}$`)
+}
+
 const commands = {
-    quake: /!quake\b/,
-    profile: /!profile\b/,
-    quote: /!quote\b/,
-    news: /!news\b/,
-    help: /!help\b/,
-    podcast: /!podcast\b/,
-    followme: /!followme(.+)/,
-    avatar: /!avatar(.+)/,
+    quake: filtered("quake"),
+    profile: filtered("profile"),
+    quote: filtered("quote"),
+    news: filtered("news"),
+    help: filtered("help"),
+    followme: filtered("followme", "after"),
+    avatar: filtered("avatar", "after"),
 }
 
 module.exports = commands
