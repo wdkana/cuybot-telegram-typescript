@@ -16,7 +16,6 @@ const bot = new Bot(token, botOptions)
 
 function main(): void {
     bot.showHelp()
-    bot.showSticker()
     bot.showFollowedText()
     bot.showAvatar()
     bot.showEarthQuakeInfo()

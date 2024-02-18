@@ -36,12 +36,6 @@ class Bot extends TelegramBot {
             this.sendMessage(id, `halo juga juragan! 😁`)
         })
     }
-    showSticker(): void {
-        this.on("sticker", (data): void => {
-            const { from: { id }, sticker: { emoji } } = data
-            this.sendMessage(id, emoji)
-        })
-    }
     showFollowedText(): void {
         this.onText(commands.follow, (data: UserData, after: RegExpExecArray): void => {
             const { from: { id } } = data
