@@ -5,7 +5,7 @@ const { checkTime, checkUser, checkCommands, checkCallback } = require("../libs/
 
 class Bot extends TelegramBot {
     constructor(token) {
-        super(token, { polling: true, filepath: false })
+        super(token, { polling: true })
         checkCommands(this)
         checkCallback(this)
     }
@@ -59,7 +59,7 @@ class Bot extends TelegramBot {
         this.onText(commands.news, async (data) => {
             console.log("feature: get_news executed!", checkUser(data), checkTime());
             const id = data.from.id
-            this.sendMessage(id, "mohon tunggu...")
+            this.sendMessage(id, "please wait gan...")
             try {
                 const url = "https://jakpost.vercel.app/api/category/indonesia"
                 const api = await fetch(url)
