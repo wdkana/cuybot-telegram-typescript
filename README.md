@@ -28,7 +28,7 @@ This project aims to education purposes. It provides an intuitive and easy-to-us
 ## Screenshoot 🍻
 
 <div align="center">
-    <img src="https://github.com/deaaprizal/cuybot-telegram-typescript/blob/main/assets/captured/news.png?raw=true" alt="cuybot-asset-2" width="50%" />
+    <img src="https://github.com/deaaprizal/cuybot-telegram-typescript/blob/main/assets/captured/avatar.png?raw=true" alt="cuybot-asset-2" width="50%" />
     <br>
     <br>
     <img src="https://github.com/deaaprizal/cuybot-telegram-typescript/blob/main/assets/captured/help.png?raw=true" alt="cuybot-asset-3" width="50%" />
