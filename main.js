@@ -1,26 +1,31 @@
-const env = require("dotenv")
 const Bot = require("./app/Bot")
-env.config()
+require("dotenv").config()
+
+// SET Zona Waktu Jakarta untuk seluruh sistem
 process.env.TZ = 'Indonesia/Jakarta';
 
-// BOT CONFIG
-console.log("🎇 starting cuybot...");
-const bot_token = process.env.token
+// BOT CONFIGURATION
+const bot_token = process.env.TOKEN
+const bot_option = { polling: true, filePath: false }
 
 // INITIALIZING BOT
-console.log("preparing feature...");
-const bot = new Bot(bot_token)
+console.log("🎇 starting cuybot...");
+const bot = new Bot(bot_token, bot_option)
 
 // ACTIVATE BOT FEATURE
-bot.get_sticker()
-bot.get_help()
-bot.get_profile()
-bot.get_earth_quake()
-bot.get_quote()
-bot.get_news()
-bot.get_text_by_input()
-bot.get_avatar_by_name()
+const main = () => {
+    console.log("preparing feature...");
+    bot.get_greeting()
+    bot.get_help()
+    bot.get_sticker()
+    bot.get_earth_quake()
+    bot.get_quotes()
+    bot.get_news()
+    bot.get_text_by_input()
+    bot.get_avatar_by_name()
+}
 
+main()
 console.log("🎉 bot is running now! 🎉");
 
 
