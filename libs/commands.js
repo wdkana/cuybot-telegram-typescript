@@ -1,21 +1,27 @@
-const command_sign = "!"
+// flexible prefix
+const command_prefix = "!"
 
-function filtered({ word, type }) {
-    if (type == "after") {
-        return new RegExp(`^${command_sign}${word}(.+)`)
-    }
-    // type == only:
-    return new RegExp(`^${command_sign}${word}$`)
+/*
+    filtered function untuk melakukan pengecekan rules Regex yang ingin digunakan
+    only  -> format fixed
+    after -> format fixed + kata-kata setelahnya.
+
+    contoh after: !follow halogan
+    data yang didapat: ["!follow halogan"]["halogan"]
+**/
+function filtered({ keyword, type }) {
+    if (type == "only") return new RegExp(`^${command_prefix}${keyword}$`)
+    if (type == "after") return new RegExp(`^${command_prefix}${keyword}(.+)`)
 }
 
 const commands = {
-    quake: filtered({ word: "quake" }),
-    profile: filtered({ word: "profile" }),
-    quote: filtered({ word: "quote" }),
-    news: filtered({ word: "news" }),
-    help: filtered({ word: "help" }),
-    followme: filtered({ word: "followme", type: "after" }),
-    avatar: filtered({ word: "avatar", type: "after" }),
+    quake: filtered({ keyword: "gempa", type: "only" }),
+    greeting: filtered({ keyword: "halo", type: "only" }),
+    quotes: filtered({ keyword: "quotes", type: "only" }),
+    news: filtered({ keyword: "news", type: "only" }),
+    help: filtered({ keyword: "help", type: "only" }),
+    follow: filtered({ keyword: "follow", type: "after" }),
+    avatar: filtered({ keyword: "avatar", type: "after" }),
 }
 
 module.exports = commands

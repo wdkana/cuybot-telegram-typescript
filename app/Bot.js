@@ -1,17 +1,35 @@
 const TelegramBot = require("node-telegram-bot-api");
 const commands = require("../libs/commands");
-const showHelp = require("../libs/help");
+const { helpText } = require("../libs/constant");
 const { checkTime, checkUser, checkCommands, checkCallback } = require("../libs/utils");
 
 class Bot extends TelegramBot {
-    constructor(token) {
-        super(token, { polling: true })
+    constructor(token, options) {
+        super(token, options)
         checkCommands(this)
         checkCallback(this)
+    }
+    get_greeting() {
+        this.onText(commands.greeting, (data) => {
+            console.log("feature: get_greeting executed!", checkUser(data), checkTime());
+
+            const id = data.from.id;
+            const greeting = `Halo saya tau kamu ${checkUser(data)}! 🙊`;
+            this.sendMessage(id, greeting);
+        });
+    }
+    get_help() {
+        this.onText(commands.help, async (data) => {
+            console.log("feature: get_help executed!", checkUser(data), checkTime());
+
+            const id = data.from.id
+            this.sendMessage(id, helpText)
+        })
     }
     get_sticker() {
         this.on("sticker", (data) => {
             console.log("feature: get_sticker executed!", checkUser(data), checkTime());
+
             const id = data.from.id
             const sticker = data.sticker.emoji
             this.sendMessage(id, sticker)
@@ -20,36 +38,38 @@ class Bot extends TelegramBot {
     get_earth_quake() {
         this.onText(commands.quake, async (data) => {
             console.log("feature: get_earth_quake executed!", checkUser(data), checkTime());
+
             const id = data.from.id
-            const url = "https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json"
+            const bmkg_endpoint = process.env.BMKG_ENDPOINT
+
+            this.sendMessage(id, "mohon tunggu juragan...")
+
             try {
-                const api = await fetch(url)
+                const api = await fetch(bmkg_endpoint)
                 const response = await api.json()
-                const { Kedalaman, Magnitude, Wilayah, Potensi, Tanggal, Jam } = response.Infogempa.gempa
+                const { Kedalaman, Magnitude, Wilayah, Potensi, Tanggal, Jam, Shakemap } = response.Infogempa.gempa
+                const image = `${process.env.BMKG_IMAGE_SOURCE}/${Shakemap}`
+
                 const result = `info gempa terbaru:\n\n${Tanggal} | ${Jam}\nWilayah: ${Wilayah}\nBesar: ${Magnitude} SR\nKedalaman: ${Kedalaman}\nPotensi: ${Potensi}`
-                this.sendMessage(id, result)
+                this.sendPhoto(id, image, { caption: result })
             } catch (e) {
                 this.sendMessage("Gagal memuat data berita, silahkan coba lagi 😢")
             }
         })
     }
-    get_profile() {
-        this.onText(commands.profile, (data) => {
-            console.log("feature: get_profile executed!", checkUser(data), checkTime());
-            const id = data.from.id;
-            const response = `Halo saya tau kamu ${checkUser(data)}! 🙊`;
-            this.sendMessage(id, response);
-        });
-    }
-    get_quote() {
-        this.onText(commands.quote, async (data) => {
+    get_quotes() {
+        this.onText(commands.quotes, async (data) => {
             console.log("feature: get_quote executed!", checkUser(data), checkTime());
+
             const id = data.from.id
-            const url = "https://api.kanye.rest/"
+            const quotes_endpoint = process.env.QUOTES_ENDPOINT
+
             try {
-                const api = await fetch(url)
+                const api = await fetch(quotes_endpoint)
                 const response = await api.json()
-                this.sendMessage(id, response.quote)
+                const quotes = response.quote
+
+                this.sendMessage(id, quotes)
             } catch (e) {
                 this.sendMessage("Gagal memuat quotes, silahkan coba lagi 😢")
             }
@@ -58,12 +78,16 @@ class Bot extends TelegramBot {
     get_news() {
         this.onText(commands.news, async (data) => {
             console.log("feature: get_news executed!", checkUser(data), checkTime());
+
             const id = data.from.id
-            this.sendMessage(id, "please wait gan...")
+            const news_endpoint = process.env.NEWS_ENDPOINT
+
+            this.sendMessage(id, "mohon tunggu juragan...")
+
             try {
-                const url = "https://jakpost.vercel.app/api/category/indonesia"
-                const api = await fetch(url)
+                const api = await fetch(news_endpoint)
                 const response = await api.json()
+
                 for (var i = 0; i < 3; i++) {
                     const { title, image, headline } = response.posts[i]
                     this.sendPhoto(id, image, { caption: `\n---\n${title}\n---\n\n${headline}` })
@@ -73,29 +97,23 @@ class Bot extends TelegramBot {
             }
         })
     }
-    get_help() {
-        this.onText(commands.help, async (data) => {
-            console.log("feature: get_help executed!", checkUser(data), checkTime());
-            const id = data.from.id
-            this.sendMessage(id, showHelp())
-        })
-    }
-
-    // WITH PARAMETER //
     get_text_by_input() {
-        this.onText(commands.followme, (data, after) => {
+        this.onText(commands.follow, (data, after) => {
             console.log("feature: get_text_by_input executed!", checkUser(data), checkTime());
-            let chatId = data.from.id;
-            this.sendMessage(chatId, after[1]);
+
+            const id = data.from.id;
+            this.sendMessage(id, after[1]);
         });
     }
-    // WITH PARAMETER //
     get_avatar_by_name() {
         this.onText(commands.avatar, async (data, after) => {
             console.log("feature: get_avatar_by_name executed!", checkUser(data), checkTime());
+
             const id = data.from.id
+            const avatar_endpoint = process.env.AVATAR_ENDPOINT
+
             this.sendMessage(id, "mohon tunggu...")
-            this.sendPhoto(id, `https://robohash.org/${after[1]}`)
+            this.sendPhoto(id, `${avatar_endpoint}/${after[1]}`)
         })
     }
 }
