@@ -1,4 +1,4 @@
-const helpText = ` 🍻 Panduan Penggunaan 🍻
+const helpText: string = ` 🍻 Panduan Penggunaan 🍻
 
 👇 Basic Command 👇
 ---
@@ -16,4 +16,6 @@ const helpText = ` 🍻 Panduan Penggunaan 🍻
 ---
 `
 
-module.exports = { helpText }
+const commandPrefix: string = "!";
+
+export { helpText, commandPrefix }
